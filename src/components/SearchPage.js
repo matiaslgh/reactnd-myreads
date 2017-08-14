@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import debounce from 'lodash.debounce'
-import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from '../utils/BooksAPI'
 import BooksGrid from './BooksGrid'
 
 class SearchPage extends Component {
