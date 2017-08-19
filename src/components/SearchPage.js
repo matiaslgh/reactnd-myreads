@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import debounce from 'lodash.debounce'
 import * as BooksAPI from '../utils/BooksAPI'
 import BooksGrid from './BooksGrid'
 
 class SearchPage extends Component {
+	static propTypes = {
+		books: PropTypes.array.isRequired,
+		handleShelfChange: PropTypes.func.isRequired
+	}
 
 	state = {
 		results: []
@@ -17,9 +22,24 @@ class SearchPage extends Component {
 		}
 
 		BooksAPI.search(query).then(results => {
-			this.setState(() => results && !results.error ? {results} : {results: []})
+			if (results && !results.error) {
+				this.setState({results: this.updateSelectedShelves(results)})
+			} else {
+				this.setState({results: []})
+			}
 		})
 	}, 300)
+
+	updateSelectedShelves = books => {
+		return books.map(book => {
+			const bookInShelf = this.props.books.find(b => b.id === book.id)
+			if (bookInShelf) {
+				return bookInShelf
+			}
+			book.shelf = 'none'
+			return book
+		})
+	}
 
 	render() {
 		return (
@@ -31,7 +51,7 @@ class SearchPage extends Component {
 					</div>
 				</div>
 				<div className="search-books-results">
-					<BooksGrid books={this.state.results} />
+					<BooksGrid books={this.state.results} handleShelfChange={this.props.handleShelfChange} />
 				</div>
 			</div>
 		)

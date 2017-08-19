@@ -6,7 +6,8 @@ import Bookshelf from './Bookshelf'
 class MainPage extends Component {
 
 	static propTypes = {
-		books: PropTypes.array.isRequired
+		books: PropTypes.array.isRequired,
+		handleShelfChange: PropTypes.func.isRequired
 	}
 
 	filterByShelf = (shelf) => {
@@ -14,6 +15,8 @@ class MainPage extends Component {
 	}
 
 	render() {
+		const { handleShelfChange } = this.props
+
 		return(
 			<div className="list-books">
 				<div className="list-books-title">
@@ -22,11 +25,11 @@ class MainPage extends Component {
 				<div className="list-books-content">
 					<div>
 
-						<Bookshelf title="Currently Reading" books={this.filterByShelf('currentlyReading')}/>
+						<Bookshelf title="Currently Reading" books={this.filterByShelf('currentlyReading')} handleShelfChange={handleShelfChange}/>
 
-						<Bookshelf title="Want to Read" books={this.filterByShelf('wantToRead')}/>
+						<Bookshelf title="Want to Read" books={this.filterByShelf('wantToRead')} handleShelfChange={handleShelfChange}/>
 
-						<Bookshelf title="Read" books={this.filterByShelf('read')}/>
+						<Bookshelf title="Read" books={this.filterByShelf('read')} handleShelfChange={handleShelfChange}/>
 
 					</div>
 				</div>

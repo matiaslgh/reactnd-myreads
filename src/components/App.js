@@ -10,6 +10,28 @@ class BooksApp extends React.Component {
 		books: []
 	}
 
+	handleShelfChange = (book, shelf) => {
+		const bookIndex = this.state.books.findIndex(b => b.id === book.id)
+		//First, update the state and then update the books in the server
+		if (bookIndex !== -1) {
+			this.setState(state => {
+				state.books[bookIndex].shelf = shelf
+				return state
+			})
+		} else {
+			this.setState(state => {
+				state.books.push(book)
+				return state
+			})
+		}
+
+		//Update books in the server, if there is an error reload books, if not do nothing
+		BooksAPI.update(book, shelf).then(()=>{}, error => {
+			console.error(`There was an error trying to update the book with id=${book.id} with shelf=${shelf}`)
+			BooksAPI.getAll().then(books => {this.setState({books})})
+		})
+	}
+
 	componentDidMount() {
 		BooksAPI.getAll().then(books => {this.setState({books})})
 	}
@@ -18,10 +40,12 @@ class BooksApp extends React.Component {
 		return (
 			<div className="app">
 				<Route exact path="/" render={() => (
-					<MainPage books={this.state.books}/>
+					<MainPage books={this.state.books} handleShelfChange={this.handleShelfChange}/>
 				)}/>
 
-				<Route exact path="/search" component={SearchPage} />
+				<Route exact path="/search" render={() => (
+					<SearchPage books={this.state.books} handleShelfChange={this.handleShelfChange}/>
+				)} />
 			</div>
 		)
 	}
