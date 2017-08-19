@@ -20,6 +20,7 @@ class BooksApp extends React.Component {
 			})
 		} else {
 			this.setState(state => {
+				book.shelf = shelf
 				state.books.push(book)
 				return state
 			})
