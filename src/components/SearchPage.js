@@ -121,6 +121,9 @@ class SearchPage extends Component {
 				<div className="search-books-results">
 					<BooksGrid books={this.state.results} handleShelfChange={this.props.handleShelfChange} />
 				</div>
+				{!this.state.results.length && (
+					<span>There are no results for your query</span>
+				)}
 			</div>
 		)
 	}

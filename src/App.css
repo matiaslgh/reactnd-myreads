@@ -64,6 +64,10 @@ body, .app {
 
 /* search page */
 
+.search-books {
+	text-align: center;
+}
+
 .search-books-bar {
 	position: fixed;
 	width: 100%;
