@@ -10,20 +10,18 @@ import BooksGrid from './BooksGrid'
 class SearchPage extends Component {
 	constructor(props) {
 		super(props)
-		this.state.query = this.getQueryFromURL()
+		this.state = {
+			firstRender: true,
+			results: [],
+			query: this.getQueryFromURL(),
+			resultsHash: 0 //identify all the results with an unique value
+		}
 		this.backButtonPressed = false //TODO: Check if using a class property instead of the state is ok
 	}
 
 	static propTypes = {
 		books: PropTypes.array.isRequired,
 		handleShelfChange: PropTypes.func.isRequired
-	}
-
-	state = {
-		firstRender: true,
-		results: [],
-		query: '',
-		resultsHash: 0 //identify all the results with an unique value
 	}
 
 	getQueryFromURL = () => {
